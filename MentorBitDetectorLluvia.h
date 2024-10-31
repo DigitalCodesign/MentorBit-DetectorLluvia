@@ -35,8 +35,9 @@
 #define MentorBitDetectorLluvia_h
 
 #include <arduino.h>
+#include <MentorPort.h>
 
-class MentorBitDetectorLluvia
+class MentorBitDetectorLluvia : public MentorPort
 {
 
     public: 
@@ -45,11 +46,11 @@ class MentorBitDetectorLluvia
         
         bool obtenerLecturaDigital();
         uint16_t obtenerLecturaAnalogica();
+        void configPort(const Port& port) override;
 
     private:
 
-        uint8_t _detector_pin;
-        uint8_t _analog_detector_pin;
+        Port _port;
         
 };
 

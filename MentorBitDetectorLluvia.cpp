@@ -33,10 +33,9 @@
 
 #include <MentorBitDetectorLluvia.h>
 
-MentorBitDetectorLluvia::MentorBitDetectorLluvia(uint8_t detector_pin, uint8_t analog_detector_pin){
-    _detector_pin = detector_pin;
-    _analog_detector_pin = analog_detector_pin;
-    pinMode(_detector_pin, INPUT);
+MentorBitDetectorLluvia::MentorBitDetectorLluvia(uint8_t detector_pin = 0, uint8_t analog_detector_pin = 0) {
+    _port.gpios[0] = detector_pin;
+    _port.gpios[1] = analog_detector_pin;
 }
 
 bool MentorBitDetectorLluvia::obtenerLecturaDigital(){
@@ -49,4 +48,13 @@ uint16_t MentorBitDetectorLluvia::obtenerLecturaAnalogica(){
     uint16_t value;
     value = analogRead(_analog_detector_pin);
     return value;
+}
+
+void MentorBitDetectorLluvia::configPort(const Port& port) {
+
+    _port.type = port.type;
+    _port.location = port.location;
+    _port.gpios[0] = port.gpios[0];
+    _port.gpios[1] = port.gpios[1];
+
 }

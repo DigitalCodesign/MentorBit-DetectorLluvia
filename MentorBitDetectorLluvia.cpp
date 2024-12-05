@@ -40,13 +40,13 @@ MentorBitDetectorLluvia::MentorBitDetectorLluvia(uint8_t detector_pin = 0, uint8
 
 bool MentorBitDetectorLluvia::obtenerLecturaDigital(){
     bool value;
-    value = digitalRead(_detector_pin);
+    value = digitalRead(_port.gpios[1]);
     return value;
 }
 
 uint16_t MentorBitDetectorLluvia::obtenerLecturaAnalogica(){
     uint16_t value;
-    value = analogRead(_analog_detector_pin);
+    value = analogRead(_port.gpios[0]);
     return value;
 }
 

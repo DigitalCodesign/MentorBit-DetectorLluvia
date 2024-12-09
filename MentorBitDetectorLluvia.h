@@ -42,7 +42,7 @@ class MentorBitDetectorLluvia : public MentorPort
 
     public: 
 
-        MentorBitDetectorLluvia(uint8_t detector_pin, uint8_t analog_detector_pin);
+        MentorBitDetectorLluvia(uint8_t detector_pin = 0, uint8_t analog_detector_pin = 0);
         
         bool obtenerLecturaDigital();
         uint16_t obtenerLecturaAnalogica();

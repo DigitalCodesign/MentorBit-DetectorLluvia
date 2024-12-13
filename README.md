@@ -1,3 +1,4 @@
+
 # MentorBit-DetectorLluvia
 
 Esta librería está diseñada para interactuar con el módulo de Detector de Lluvia de MentorBit, permitiendo obtener lecturas digitales y analógicas desde el sensor de lluvia.
@@ -12,30 +13,42 @@ Una vez que tengas la librería instalada en el Arduino IDE, inclúyela en tu pr
 #include <MentorBitDetectorLluvia.h>
 ```
 
-## Constructor
+### Constructor
 
-### `MentorBitDetectorLluvia(uint8_t detector_pin = 0, uint8_t analog_detector_pin = 0)`
-
-Este constructor inicializa los pines del módulo, especificando el pin digital y el pin analógico para las lecturas del sensor de lluvia. Los parámetros `detector_pin` y `analog_detector_pin` son opcionales.
+Una vez incluida la librería, usamos el constructor para crear el objeto del módulo Detector de Lluvia y definimos los pines a los que está conectado el sensor:
 
 ```cpp
-MentorBitDetectorLluvia detector(2, A0);  // Pin digital 2 y pin analógico A0
+MentorBitDetectorLluvia detector(detector_pin, analog_detector_pin);
 ```
 
-## Métodos Principales
+Siendo `detector_pin` el pin digital al que está conectado el sensor y `analog_detector_pin` el pin analógico para las lecturas del sensor de lluvia.
 
-### `obtenerLecturaDigital()`
+### Métodos Principales
 
-Devuelve `true` o `false` dependiendo de la lectura digital del sensor, con un umbral ajustable a través del potenciometro.
+#### `obtenerLecturaDigital()`
+
+Devuelve `true` o `false` dependiendo de la lectura digital del sensor, con un umbral ajustable a través del potenciómetro:
 
 ```cpp
 bool lectura = detector.obtenerLecturaDigital();
 ```
 
-### `obtenerLecturaAnalogica()`
+#### `obtenerLecturaAnalogica()`
 
-Devuelve un valor analógico de 2 bytes, correspondiente a la lectura del sensor de lluvia en formato de valor entre 0 y 1023.
+Devuelve un valor analógico de 2 bytes, correspondiente a la lectura del sensor de lluvia en formato de valor entre 0 y 1023:
 
 ```cpp
 uint16_t lectura_analogica = detector.obtenerLecturaAnalogica();
+```
+
+#### `configPort(const Port& port)`
+
+Configura los pines y otros parámetros del puerto en el que está conectado el módulo. Se puede usar para redefinir los pines de conexión al sensor:
+
+```cpp
+Port puerto;
+puerto.type = 'm';
+puerto.gpios[0] = 2;  // Pin digital
+puerto.gpios[1] = A0;  // Pin analógico
+detector.configPort(puerto);
 ```

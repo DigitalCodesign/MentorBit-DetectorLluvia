@@ -1,54 +1,53 @@
+# MentorBitDetectorLluvia
 
-# MentorBit-DetectorLluvia
+Librería para la detección de lluvia mediante sensor de lluvia en módulos compatibles con MentorBit.
 
-Esta librería está diseñada para interactuar con el módulo de Detector de Lluvia de MentorBit, permitiendo obtener lecturas digitales y analógicas desde el sensor de lluvia.
+## Descripción
 
-Puedes encontrar el producto y más material de electrónica y robótica en nuestra tienda oficial: [https://digitalcodesign.com/shop](https://digitalcodesign.com/shop)
+La librería `MentorBitDetectorLluvia` permite la lectura de datos de un sensor de lluvia en módulos compatibles con MentorBit. Ofrece tanto lectura digital (presencia o ausencia de lluvia) como lectura analógica (intensidad de la lluvia), permitiendo una monitorización precisa de las condiciones climáticas.
 
 ## Modo de Empleo
 
-Una vez que tengas la librería instalada en el Arduino IDE, inclúyela en tu proyecto con la siguiente línea:
+1.  **Instalación:**
+    * Abre el IDE compatible con MentorBit.
+    * Ve a "Herramientas" -> "Gestionar librerías..."
+    * Busca "MentorBitDetectorLluvia" e instálala.
 
-```cpp
-#include <MentorBitDetectorLluvia.h>
-```
+2.  **Ejemplo básico:**
+
+    ```c++
+    #include <MentorBitDetectorLluvia.h>
+
+    MentorBitDetectorLluvia lluvia(A0, 2); // Sensor conectado a A0 (analógico) y 2 (digital)
+
+    void setup() {
+      Serial.begin(9600);
+      Serial.println("Sensor de lluvia inicializado.");
+    }
+
+    void loop() {
+      bool lluviaDigital = lluvia.obtenerLecturaDigital();
+      uint16_t lluviaAnalogica = lluvia.obtenerLecturaAnalogica();
+
+      Serial.print("Lectura Digital: ");
+      Serial.println(lluviaDigital ? "Lluvia detectada" : "Sin lluvia");
+
+      Serial.print("Lectura Analógica: ");
+      Serial.println(lluviaAnalogica);
+
+      delay(1000);
+    }
+    ```
+
+## Constructor y Métodos Públicos
 
 ### Constructor
 
-Una vez incluida la librería, usamos el constructor para crear el objeto del módulo Detector de Lluvia y definimos los pines a los que está conectado el sensor:
+* `MentorBitDetectorLluvia(uint8_t detector_pin = 0, uint8_t analog_detector_pin = 0)`: Crea un objeto `MentorBitDetectorLluvia`.
+    * `detector_pin`: Número de pin analógico al que está conectado el sensor para la lectura analógica. Si no se especifica, se asume que no está conectado a ningún pin inicialmente.
+    * `analog_detector_pin`: Número de pin digital al que está conectado el sensor para la lectura digital. Si no se especifica, se asume que no está conectado a ningún pin inicialmente.
 
-```cpp
-MentorBitDetectorLluvia detector(detector_pin, analog_detector_pin);
-```
+### Métodos
 
-Siendo `detector_pin` el pin digital al que está conectado el sensor y `analog_detector_pin` el pin analógico para las lecturas del sensor de lluvia.
-
-### Métodos Principales
-
-#### `obtenerLecturaDigital()`
-
-Devuelve `true` o `false` dependiendo de la lectura digital del sensor, con un umbral ajustable a través del potenciómetro:
-
-```cpp
-bool lectura = detector.obtenerLecturaDigital();
-```
-
-#### `obtenerLecturaAnalogica()`
-
-Devuelve un valor analógico de 2 bytes, correspondiente a la lectura del sensor de lluvia en formato de valor entre 0 y 1023:
-
-```cpp
-uint16_t lectura_analogica = detector.obtenerLecturaAnalogica();
-```
-
-#### `configPort(const Port& port)`
-
-Configura los pines y otros parámetros del puerto en el que está conectado el módulo. Se puede usar para redefinir los pines de conexión al sensor:
-
-```cpp
-Port puerto;
-puerto.type = 'm';
-puerto.gpios[0] = 2;  // Pin digital
-puerto.gpios[1] = A0;  // Pin analógico
-detector.configPort(puerto);
-```
+* `bool obtenerLecturaDigital()`: Devuelve `true` si se detecta lluvia (lectura digital), `false` en caso contrario.
+* `uint16_t obtenerLecturaAnalogica()`: Devuelve el valor analógico de la intensidad de la lluvia.

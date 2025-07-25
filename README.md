@@ -1,53 +1,105 @@
-# MentorBitDetectorLluvia
+# MentorBit-DetectorLluvia
 
-Librería para la detección de lluvia mediante sensor de lluvia en módulos compatibles con MentorBit.
+Esta librería está diseñada para que puedas detectar la presencia de lluvia o humedad en superficies usando tu placa MentorBit y el **módulo de sensor de lluvia**.
+
+Si estás empezando en el mundo de la electrónica, ¡no te preocupes! MentorBit está pensado para que aprender sea fácil y divertido. Esta placa ya incluye un montón de componentes (LEDs, pulsadores, pantallas, etc.) y utiliza conectores especiales (JST) para que puedas añadir nuevos sensores y módulos sin tener que pelearte con un montón de cables. Pásate por nuestra web para saber más de MentorBit y nuestros productos [pinchando aquí](https://digitalcodesign.com/).
+
+![Render del Módulo MentorBit Detector de Lluvia.](https://github.com/DigitalCodesign/MentorBit-DetectorLluvia/blob/main/assets/RainDetector_Module.png)
+
+Con esta librería, podrás saber cuándo empieza a llover y crear reacciones automáticas ante la humedad en tus proyectos.
+
+---
 
 ## Descripción
 
-La librería `MentorBitDetectorLluvia` permite la lectura de datos de un sensor de lluvia en módulos compatibles con MentorBit. Ofrece tanto lectura digital (presencia o ausencia de lluvia) como lectura analógica (intensidad de la lluvia), permitiendo una monitorización precisa de las condiciones climáticas.
+### ¿Qué es un sensor de lluvia?
 
-## Modo de Empleo
+Un sensor de lluvia funciona detectando gotas de agua sobre una superficie conductora. Cuando cae agua sobre el panel del sensor, su resistencia eléctrica cambia, lo cual permite determinar si está lloviendo o hay humedad presente.
 
-1.  **Instalación:**
-    * Abre el IDE compatible con MentorBit.
-    * Ve a "Herramientas" -> "Gestionar librerías..."
-    * Busca "MentorBitDetectorLluvia" e instálala.
+Este tipo de sensor es ideal para proyectos de automatización, protección de dispositivos o monitoreo ambiental.
 
-2.  **Ejemplo básico:**
+---
 
-    ```c++
-    #include <MentorBitDetectorLluvia.h>
+### ¿Qué hace esta librería?
 
-    MentorBitDetectorLluvia lluvia(A0, 2); // Sensor conectado a A0 (analógico) y 2 (digital)
+La librería **MentorBit-DetectorLluvia** facilita la lectura del sensor digital y te proporciona una función sencilla para saber si el sensor ha detectado agua.
 
-    void setup() {
-      Serial.begin(9600);
-      Serial.println("Sensor de lluvia inicializado.");
+Así puedes centrarte en el desarrollo de tu idea sin preocuparte por el tratamiento de señales o configuraciones complejas.
+
+---
+
+### ¿Qué puedes construir con este módulo?
+
+- Un sistema que cierre ventanas automáticamente cuando llueve.
+- Una estación meteorológica casera.
+- Alarmas de protección para dispositivos expuestos al exterior.
+- Sistemas de riego inteligentes que eviten regar si está lloviendo.
+
+---
+
+## Cómo empezar
+
+### 1. **Conexión del Módulo**
+
+Conecta el módulo detector de lluvia a uno de los puertos analógico-digital con conector JST de 4 pines que estan en la sección "Puertos para Módulos" de la placa MentorBit. Puedes usar tanto el pin analogico como el pin digital para obtener información de este módulo.
+
+### 2. **Instalación de la Librería**
+
+- Abre tu entorno de programación IDE de Arduino.
+- Ve al menú *Programa -> Incluir Librería -> Administrar Librerías...*
+- En el buscador, escribe ***MentorBit-DetectorLluvia*** y haz clic en "Instalar".
+
+![Ejemplo de búsqueda en el gestor de librerías del IDE de Arduino.](https://github.com/DigitalCodesign/MentorBit-DetectorLluvia/blob/main/assets/library_instalation_example.png)
+
+---
+
+## Ejemplo Básico: Detectar lluvia
+
+Este ejemplo imprime un mensaje si el sensor detecta gotas de agua.
+
+```cpp
+#include <MentorBitDetectorLluvia.h>
+
+// Definimos los pines a los que se va a conectar el modulo
+#define PIN_ANALOGICO A4
+#define PIN_DIGITAL 24
+
+// Creamos el objeto del sensor
+MentorBitDetectorLluvia Detector_lluvia(PIN_DIGITAL, PIN_ANALOGICO);
+
+void setup() {
+    // Inicializamos el monitor Serial a una velocidad de 9600 baudios
+    Serial.begin(9600);
+}
+
+void loop() {
+    if (sensorLluvia.obtenerLecturaDigital()) {
+        Serial.println("¡Lluvia detectada!");
+    } else {
+        Serial.println("Sin lluvia.");
     }
+    delay(1000);
+}
+```
 
-    void loop() {
-      bool lluviaDigital = lluvia.obtenerLecturaDigital();
-      uint16_t lluviaAnalogica = lluvia.obtenerLecturaAnalogica();
+---
 
-      Serial.print("Lectura Digital: ");
-      Serial.println(lluviaDigital ? "Lluvia detectada" : "Sin lluvia");
+## Funciones Principales
 
-      Serial.print("Lectura Analógica: ");
-      Serial.println(lluviaAnalogica);
+- `bool obtenerLecturaDigital()`  
+  Devuelve `true` si se ha detectado presencia de agua, `false` si no.
 
-      delay(1000);
-    }
-    ```
+- `uint16_t obtenerLecturaAnalogica()`  
+  Devuelve el valor analogico medido por el sensor.
 
-## Constructor y Métodos Públicos
+---
 
-### Constructor
+## Recursos Adicionales
 
-* `MentorBitDetectorLluvia(uint8_t detector_pin = 0, uint8_t analog_detector_pin = 0)`: Crea un objeto `MentorBitDetectorLluvia`.
-    * `detector_pin`: Número de pin analógico al que está conectado el sensor para la lectura analógica. Si no se especifica, se asume que no está conectado a ningún pin inicialmente.
-    * `analog_detector_pin`: Número de pin digital al que está conectado el sensor para la lectura digital. Si no se especifica, se asume que no está conectado a ningún pin inicialmente.
-
-### Métodos
-
-* `bool obtenerLecturaDigital()`: Devuelve `true` si se detecta lluvia (lectura digital), `false` en caso contrario.
-* `uint16_t obtenerLecturaAnalogica()`: Devuelve el valor analógico de la intensidad de la lluvia.
+- [Web del fabricante](https://digitalcodesign.com/)
+- [Tienda Online de Canarias](https://canarias.digitalcodesign.com/shop)
+- [Tienda Online de Península](https://digitalcodesign.com/shop)
+- [Web Oficial de MentorBit](https://digitalcodesign.com/mentorbit)
+- [Web Oficial del Módulo de Lluvia](https://canarias.digitalcodesign.com/shop/00039086-mentorbit-modulo-detector-de-lluvia-8140?category=230&order=create_date+desc#attr=)
+- [Manual de usuario del Módulo](https://drive.google.com/file/d/15jhHWeUDYdCFEy5gRsNnJ5bLMTA1X6o_/view?usp=drive_link)
+- [Modelo 3D del Módulo en formato .STEP](https://drive.google.com/file/d/1HQxT88MSzlSvJ_GRGNyVe74X1aEhiH53/view?usp=drive_link)

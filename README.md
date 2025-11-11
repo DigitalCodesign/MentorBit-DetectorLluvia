@@ -73,7 +73,7 @@ void setup() {
 }
 
 void loop() {
-    if (sensorLluvia.obtenerLecturaDigital()) {
+    if (Detector_lluvia.obtenerLecturaDigital()) {
         Serial.println("¡Lluvia detectada!");
     } else {
         Serial.println("Sin lluvia.");
